@@ -3,6 +3,7 @@ import streamlit as st
 import altair as alt
 import plotly.express as px
 import sqlite3
+
 conn = sqlite3.connect("Database/bce.db")
 c = conn.cursor()
 
@@ -30,12 +31,15 @@ def case_one_display(chart_data):
     number_max = st.number_input('Insert maximum number', min_value= 0.01, max_value= 41.00, value = 41.00)
     chart_data = chart_data[chart_data['Percentage'].between(number_min,number_max)]
     fig = px.bar(chart_data, x='Description', y='Percentage', text_auto='.3s', title='Percentage of companies per juridical form')
+    fig.update_layout(font=dict(size=15))
     st.plotly_chart(fig, use_container_width=True)
 
+
+st.image("https://economie.fgov.be/themes/custom/economie_theme/images/logo-en.svg", width=100)
 st.title('Get precentage of companies per juridical form')
 with st.container():
     with st.spinner('Rendering the display'):
         case_one_display(case_one_data(conn))
-    st.success('Done!')
+
 
 conn.close()
